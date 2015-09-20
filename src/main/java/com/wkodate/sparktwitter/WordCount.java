@@ -20,6 +20,8 @@ import java.util.regex.Pattern;
 public class WordCount {
     private static final Pattern SPACE = Pattern.compile("\\s+");
 
+    private static final String HDFS_FILE_PATH = "hdfs:///user/root/sentence.txt";
+
     public static void main(String[] args) throws Exception {
 
         if (args.length < 1) {
@@ -29,7 +31,7 @@ public class WordCount {
 
         SparkConf sparkConf = new SparkConf().setAppName("WordCount");
         JavaSparkContext ctx = new JavaSparkContext(sparkConf);
-        JavaRDD<String> lines = ctx.textFile(args[0], 1);
+        JavaRDD<String> lines = ctx.textFile(HDFS_FILE_PATH, 1);
 
         JavaRDD<String> words = lines.flatMap(s -> Arrays.asList(SPACE.split(s)));
 
